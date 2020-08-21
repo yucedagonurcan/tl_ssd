@@ -278,6 +278,10 @@ def main(args):
         args.predictionmap_file,
     )
 
+    # Check if DATABASE_DIR actually exists
+    if not os.path.exists(DATABASE_DIR):
+        raise NotADirectoryError(f"DATABASE_DIR: '{DATABASE_DIR}' doesn't exist!")
+        
     # Open test file in yml format
     database = DriveuDatabase(args.test_file)
     database.open(DATABASE_DIR)
@@ -322,13 +326,11 @@ def main(args):
                 cv2.rectangle(
                     img_color_orig, (xmin, ymin), (xmax, ymax), (0, 0, 255), 2
                 )
-                cv2.putText(img_color_orig, "RED",(xmin, ymin), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255))
 
             elif "green" in item["tags"]:
                 cv2.rectangle(
                     img_color_orig, (xmin, ymin), (xmax, ymax), (0, 255, 0), 2
                 )
-                cv2.putText(img_color_orig, "GREEN", (xmin, ymin), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0))
             elif "yellow" in item["tags"]:
                 cv2.rectangle(
                     img_color_orig,
@@ -337,7 +339,6 @@ def main(args):
                     (0, 255, 255),
                     2,
                 )
-                cv2.putText(img_color_orig, "YELLOW", (xmin, ymin), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 255))
 
             else:
                 cv2.rectangle(
@@ -347,7 +348,6 @@ def main(args):
                     (255, 255, 255),
                     2,
                 )
-                cv2.putText(img_color_orig, "UNKOWN", (xmin, ymin), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0))
 
         bar.update(idx)
         # Because of the weird qt error in gui methods in opencv-python >= 3
